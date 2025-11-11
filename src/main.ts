@@ -1,21 +1,39 @@
+import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const API_DEFAULT_PORT = 3000;
+const API_DEFAULT_PREFIX = 'api/v1';
 
-  const config = new DocumentBuilder()
-    .setTitle('NOXH BE')
-    .setDescription(
-      'The NOXH is a document of api about social housing in vietnam',
-    )
-    .setVersion('1.0.1')
+const SWAGGER_TITLE = 'NOXH API';
+const SWAGGER_DESCRIPTION =
+  'The NOXH is a document of api about social housing in vietnam';
+const SWAGGER_PREFIX = '/docs';
+
+function createSwagger(app: INestApplication) {
+  const options = new DocumentBuilder()
+    .setTitle(SWAGGER_TITLE)
+    .setDescription(SWAGGER_DESCRIPTION)
+    .setVersion('v1')
+    .addBearerAuth()
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, documentFactory);
 
-  await app.listen(process.env.PORT ?? 3000);
+  const document = () => SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup(API_DEFAULT_PREFIX + SWAGGER_PREFIX, app, document);
+}
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, new FastifyAdapter());
+
+  app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
+
+  if (!process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1') {
+    createSwagger(app);
+  }
+
+  await app.listen(process.env.PORT ?? API_DEFAULT_PORT);
 }
 
 void bootstrap();
