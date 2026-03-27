@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -15,6 +15,7 @@ const SWAGGER_TITLE = 'NOXH API';
 const SWAGGER_DESCRIPTION =
   'The NOXH is a document of api about social housing in vietnam';
 const SWAGGER_PREFIX = '/docs';
+const API_DEFAULT_HOST = 'localhost';
 
 function createSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
@@ -29,6 +30,7 @@ function createSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
@@ -36,13 +38,26 @@ async function bootstrap() {
 
   await app.register(multipart);
 
-  app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
+  const apiPrefix = process.env.API_PREFIX || API_DEFAULT_PREFIX;
+  app.setGlobalPrefix(apiPrefix);
 
-  if (!process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1') {
+  const swaggerEnabled =
+    !process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1';
+  if (swaggerEnabled) {
     createSwagger(app);
   }
 
-  await app.listen(process.env.PORT ?? API_DEFAULT_PORT);
+  const port = Number(process.env.PORT ?? API_DEFAULT_PORT);
+  const host = process.env.HOST || API_DEFAULT_HOST;
+
+  await app.listen(port, host);
+
+  logger.log(`API server is running at: http://${host}:${port}/${apiPrefix}`);
+  if (swaggerEnabled) {
+    logger.log(
+      `Swagger docs available at: http://${host}:${port}/${apiPrefix}${SWAGGER_PREFIX}`,
+    );
+  }
 }
 
 void bootstrap();
