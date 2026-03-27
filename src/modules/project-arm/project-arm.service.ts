@@ -160,7 +160,7 @@ ${thread}
 --- END OF THREAD ---${fileContent ? `\n\nAttached file (${filename}):\n${fileContent}` : ''}`;
 
     const stream = this.client.messages.stream({
-      model: 'claude-opus-4-6',
+      model: 'claude-sonnet-4-6',
       max_tokens: 8192,
       thinking: { type: 'adaptive' },
       system: SYSTEM_BATCH,
