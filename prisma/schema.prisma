@@ -15,10 +15,16 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
+
+  externalId String? // id từ telegram/slack
+  sourceId   String?
+
+  messages Message[]
+  tasks    Task[]
 }
 
 model GroupMessage {
@@ -31,4 +37,107 @@ model GroupMessage {
   createdAt  DateTime @default(now())
 
   @@index([groupName, createdAt])
+}
+
+//////////////////////////////////////////////////////
+// SOURCE (multi-channel / multi-tool)
+//////////////////////////////////////////////////////
+
+model Source {
+  id        String   @id @default(uuid())
+  type      String // telegram, slack, whatsapp, jira
+  name      String?
+  createdAt DateTime @default(now())
+
+  messages Message[]
+  tasks    Task[]
+  events   Event[]
+}
+
+//////////////////////////////////////////////////////
+// PROJECT
+//////////////////////////////////////////////////////
+
+model Project {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  tasks   Task[]
+  events  Event[]
+  Message Message[]
+}
+
+//////////////////////////////////////////////////////
+// MESSAGE (unified chat)
+//////////////////////////////////////////////////////
+
+model Message {
+  id        String  @id @default(uuid())
+  sourceId  String
+  projectId String?
+  userId    String?
+
+  content    String
+  externalId String?
+  createdAt  DateTime
+
+  source  Source   @relation(fields: [sourceId], references: [id])
+  user    User?    @relation(fields: [userId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+}
+
+//////////////////////////////////////////////////////
+// TASK (Jira + future tools)
+//////////////////////////////////////////////////////
+
+model Task {
+  id         String @id @default(uuid())
+  projectId  String
+  sourceId   String
+  externalId String // jira issue id
+
+  title      String
+  status     String
+  assigneeId String?
+  dueDate    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project  Project @relation(fields: [projectId], references: [id])
+  source   Source  @relation(fields: [sourceId], references: [id])
+  assignee User?   @relation(fields: [assigneeId], references: [id])
+}
+
+//////////////////////////////////////////////////////
+// EVENT (core for AI)
+//////////////////////////////////////////////////////
+
+model Event {
+  id        String @id @default(uuid())
+  projectId String
+  sourceId  String
+
+  type    String // blocker, decision, risk, update
+  refType String? // message, task
+  refId   String?
+
+  content   Json
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  source  Source  @relation(fields: [sourceId], references: [id])
+}
+
+//////////////////////////////////////////////////////
+// EMBEDDING (vector mapping)
+//////////////////////////////////////////////////////
+
+model Embedding {
+  id        String   @id @default(uuid())
+  refType   String // message, task, event
+  refId     String
+  vectorId  String
+  createdAt DateTime @default(now())
 }
