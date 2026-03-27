@@ -8,7 +8,8 @@ import { ProjectArmModule } from './modules/project-arm/project-arm.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.development',
+      // Support both local default and development-specific env files.
+      envFilePath: ['.env.development', '.env'],
     }),
     CommonModule,
     ProjectArmModule,
