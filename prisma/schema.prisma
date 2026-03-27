@@ -20,3 +20,15 @@ model User {
   name      String?
   createdAt DateTime @default(now())
 }
+
+model GroupMessage {
+  id         Int      @id @default(autoincrement())
+  groupName  String
+  nameUser   String
+  role       String
+  message    String
+  normalized Json?
+  createdAt  DateTime @default(now())
+
+  @@index([groupName, createdAt])
+}

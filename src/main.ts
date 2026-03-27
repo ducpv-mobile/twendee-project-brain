@@ -1,7 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import multipart from '@fastify/multipart';
 import { AppModule } from './app.module';
 
 const API_DEFAULT_PORT = 3000;
@@ -25,7 +29,12 @@ function createSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new FastifyAdapter());
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+
+  await app.register(multipart);
 
   app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
 

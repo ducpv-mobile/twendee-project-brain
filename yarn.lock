@@ -60,6 +60,13 @@
     ora "5.4.1"
     rxjs "7.8.1"
 
+"@anthropic-ai/sdk@^0.80.0":
+  version "0.80.0"
+  resolved "https://registry.yarnpkg.com/@anthropic-ai/sdk/-/sdk-0.80.0.tgz#d480aee13b7b1d4faf324845fad7a924eebdaa5b"
+  integrity sha512-WeXLn7zNVk3yjeshn+xZHvld6AoFUOR3Sep6pSoHho5YbSi6HwcirqgPA5ccFuW8QTVJAAU7N8uQQC6Wa9TG+g==
+  dependencies:
+    json-schema-to-ts "^3.1.1"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7", "@babel/code-frame@^7.27.1":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.27.1.tgz#200f715e66d52a23b221a9435534a91cc13ad5be"
@@ -293,6 +300,11 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
+"@babel/runtime@^7.18.3":
+  version "7.29.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.29.2.tgz#9a6e2d05f4b6692e1801cd4fb176ad823930ed5e"
+  integrity sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==
+
 "@babel/template@^7.27.2", "@babel/template@^7.3.3":
   version "7.27.2"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.27.2.tgz#fa78ceed3c4e7b63ebf6cb39e5852fca45f6809d"
@@ -427,6 +439,11 @@
     ajv-formats "^3.0.1"
     fast-uri "^3.0.0"
 
+"@fastify/busboy@^3.0.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-3.2.0.tgz#13ed8212f3b9ba697611529d15347f8528058cea"
+  integrity sha512-m9FVDXU3GT2ITSe0UaMA5rU3QkfC/UXtCU8y0gSN/GugTqtVldOBWIB5V6V3sbmenVZUIpU6f+mPEO2+m5iTaA==
+
 "@fastify/cors@11.1.0":
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-11.1.0.tgz#09f79748f08f147d19cfc3f1807b59791bc77cf0"
@@ -434,6 +451,11 @@
   dependencies:
     fastify-plugin "^5.0.0"
     toad-cache "^3.7.0"
+
+"@fastify/deepmerge@^3.0.0":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@fastify/deepmerge/-/deepmerge-3.2.1.tgz#0fe56a4ee3eec874556006439f7bc7d616f10dc1"
+  integrity sha512-N5Oqvltoa2r9z1tbx4xjky0oRR60v+T47Ic4J1ukoVQcptLOrIdRnCSdTGmOmajZuHVKlTnfcmrjyqsGEW1ztA==
 
 "@fastify/error@^4.0.0":
   version "4.2.0"
@@ -484,6 +506,17 @@
     fastify-plugin "^5.0.0"
     path-to-regexp "^8.1.0"
     reusify "^1.0.4"
+
+"@fastify/multipart@^9.4.0":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@fastify/multipart/-/multipart-9.4.0.tgz#be50e7d12d989cb42b835a5e46e08b40ab5b0728"
+  integrity sha512-Z404bzZeLSXTBmp/trCBuoVFX28pM7rhv849Q5TsbTFZHuk1lc4QjQITTPK92DKVpXmNtJXeHSSc7GYvqFpxAQ==
+  dependencies:
+    "@fastify/busboy" "^3.0.0"
+    "@fastify/deepmerge" "^3.0.0"
+    "@fastify/error" "^4.0.0"
+    fastify-plugin "^5.0.0"
+    secure-json-parse "^4.0.0"
 
 "@fastify/proxy-addr@^5.0.0":
   version "5.1.0"
@@ -4412,6 +4445,14 @@ json-schema-ref-resolver@^3.0.0:
   dependencies:
     dequal "^2.0.3"
 
+json-schema-to-ts@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/json-schema-to-ts/-/json-schema-to-ts-3.1.1.tgz#81f3acaf5a34736492f6f5f51870ef9ece1ca853"
+  integrity sha512-+DWg8jCJG2TEnpy7kOm/7/AxaYoaRbjVB4LFZLySZlWn8exGs3A4OLJR966cVvU26N7X9TWxl+Jsw7dzAqKT6g==
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    ts-algebra "^2.0.0"
+
 json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
@@ -5878,6 +5919,11 @@ tree-kill@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
+
+ts-algebra@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ts-algebra/-/ts-algebra-2.0.0.tgz#4e3e0953878f26518fce7f6bb115064a65388b7a"
+  integrity sha512-FPAhNPFMrkwz76P7cdjdmiShwMynZYN6SgOujD1urY4oNm80Ou9oMdmbR45LotcKOXoy7wSmHkRFE6Mxbrhefw==
 
 ts-api-utils@^2.1.0:
   version "2.1.0"
